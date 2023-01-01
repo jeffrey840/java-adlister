@@ -1,0 +1,28 @@
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/guess")
+public class GuessServlet extends HttpServlet {
+    int randomNumber = (int) (Math.random() * 3) + 1;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/guessPrompt.jsp").forward(req, resp);
+        System.out.println(randomNumber);
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String userGuess = req.getParameter("guess");
+        if (Integer.parseInt(userGuess) == randomNumber) {
+            resp.sendRedirect("/win");
+        } else {
+            resp.sendRedirect("/lose");
+        }
+    }
+}
